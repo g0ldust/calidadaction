@@ -33,17 +33,30 @@ jobs:
         pip install selenium requests
 
     # 5. Ejecutar tus pruebas aportando el token secreto
-    - name: Ejecutar Prueba 12 (Buscar en catálogo)
+   
+    
+    - name: Ejecutar Prueba 14 (Agregar al carrito)
       env:
         MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
-      run: python prueba12.py
+      run: python prueba14.py
+    
+    - name: Ejecutar Prueba 15 (Realizar compra)
+      env:
+        MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
+      run: python prueba15.py
 
-    - name: Ejecutar Prueba 13 (Realizar búsqueda real)
-      env:
+    - name: Ejecutar Prueba 16 (Validar compra)
+      env: 
         MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
-      run: python prueba13.py
+      run: python prueba16.py
 
-    - name: Ejecutar Main
+    - name: Ejecutar Prueba 17 (Validar compra)
       env:
         MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
-      run: python main.py
+      run: python prueba17.py
+    
+    - name: Ejecutar Prueba 18 (Validar compra)
+      env:
+        MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
+      run: python prueba18.py
+
