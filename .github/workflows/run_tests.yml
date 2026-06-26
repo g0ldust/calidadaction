@@ -1,0 +1,53 @@
+name: Ejecutar Pruebas Automatizadas
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Permite ejecutarlo manualmente cuando quieras
+
+jobs:
+  test-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clonar el repositorio
+    - name: Clonar el repositorio
+      uses: actions/checkout@v4
+
+    # 2. Configurar Python
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # 3. Instalar Firefox y Geckodriver en la máquina virtual
+    - name: Instalar Firefox y Geckodriver
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y firefox
+        # Descargar e instalar Geckodriver para Selenium
+        GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        curl -sL "https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz" | tar -xz
+        sudo mv geckodriver /usr/local/bin/
+
+    # 4. Instalar las librerías necesarias
+    - name: Instalar dependencias de Python
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium requests
+
+    # 5. Ejecutar tus pruebas (Agrega o quita según el orden que quieras)
+    - name: Ejecutar Prueba 12 (Buscar en catálogo)
+      env:
+        MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
+      run: python prueba12.py
+
+    - name: Ejecutar Prueba 13 (Realizar búsqueda real)
+      env:
+        MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
+      run: python prueba13.py
+
+    - name: Ejecutar Main (Si aplica)
+      env:
+        MANTIS_TOKEN: ${{ secrets.MANTIS_TOKEN }}
+      run: python main.py
