@@ -6,6 +6,7 @@ import time
 from integraciones.integracionMantis import enviar_resultado_mantis, obtener_proyectos_mantis
 
 options = Options()
+options.add_argument("--headless")
 driver = webdriver.Firefox(options=options)
 
 try:
